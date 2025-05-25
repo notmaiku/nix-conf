@@ -148,7 +148,6 @@ pkgs,
     gcc
     unzip
     wget
-   (python3.withPackages (p: [ p.websockets ]))
   ];
 
   # Allow insecure packages if needed
