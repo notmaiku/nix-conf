@@ -151,11 +151,6 @@ pkgs,
    (python3.withPackages (p: [ p.websockets ]))
   ];
 
-  fileSystems."/mnt/gameslinux" = {
-    device = "/dev/disk/by-label/gameslinux";
-    fsType = "btrfs"; 
-  };
-
   # Allow insecure packages if needed
   nixpkgs.config.permittedInsecurePackages = [
     "electron-33.4.11"
