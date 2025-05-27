@@ -47,7 +47,7 @@ pkgs,
     enable = true;
     userName = "maiku";
     userEmail = "mike1davis@rocketmail.com";
-    
+
     extraConfig = {
       init.defaultBranch = "main";
       core.editor = "vim";
@@ -89,7 +89,6 @@ pkgs,
     firefox
     neovim
     lazygit
-    steam
     unzip
     nodejs
     typescript
@@ -99,12 +98,14 @@ pkgs,
     cmake
     ninja
     go 
+    lua
     qt6.full
     kdePackages.extra-cmake-modules
     pkg-config
     shaderc
     kdePackages.kpackage
     ripgrep
+    inputs.zen-browser.packages."${system}".default
   ];
   nixpkgs.config.permittedInsecurePackages = [
     "electron-33.4.11"
@@ -113,7 +114,6 @@ pkgs,
   # Enable home-manager and git
   programs.home-manager.enable = true;
   programs.ghostty.enable = true;
-  programs.bash.enable = true;
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";

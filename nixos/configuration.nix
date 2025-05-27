@@ -8,7 +8,7 @@ pkgs,
 ...
 }: 
 
-  {
+{
 
   # You can import other NixOS modules here
   imports = [
@@ -53,8 +53,7 @@ pkgs,
       # Workaround for https://github.com/NixOS/nix/issues/9574
       nix-path = config.nix.nixPath;
     };
-    # Opinionated: disable channels
-    channel.enable = false;
+    channel.enable = true;
 
     # Opinionated: make flake registry and nix path match flake inputs
     registry = lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs;
@@ -90,16 +89,22 @@ pkgs,
   # X11 and KDE Plasma
   services.xserver.enable = true;
   services.xserver.videoDrivers = [ "amdgpu" ];
-  services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
+  services.displayManager.sddm.enable = true;
+  services.displayManager.sddm.wayland.enable = true;
 
   # OpenGL and Vulkan
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-  };
+  hardware = {
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
 
-  # Ensure all firmware is available (important for RDNA3)
+    amdgpu.amdvlk = {
+      enable = true;
+      support32Bit.enable = true;
+    };
+  };
   hardware.enableAllFirmware = true;
 
   # Keymap
@@ -148,7 +153,36 @@ pkgs,
     gcc
     unzip
     wget
+    kdePackages.sddm-kcm
+    kdiff3
+    kdePackages.isoimagewriter
+    hardinfo2
+    haruna
+    wayland-utils
+    wl-clipboard
+    protonup-qt
+    protonplus
+    heroic
+    godot
+    bitwarden
+    ninja
+    mpv
+    python3Packages.websockets
+    qt5.qtdeclarative
+    qt5.qtwebsockets
+    qt5.qtwebchannel
+    vulkan-headers
+    cmake
   ];
+
+
+  services.flatpak.enable = true;
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+    localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+  };
 
   # Allow insecure packages if needed
   nixpkgs.config.permittedInsecurePackages = [
