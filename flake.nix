@@ -1,5 +1,5 @@
 {
-  description = "Your new nix config";
+  description = "gonutters flake file";
 
   inputs = {
     # Nixpkgs
@@ -10,23 +10,41 @@
     home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+    # hyprland
+    hyprland.url = "github:hyprwm/Hyprland";
   };
 
   outputs = {
     self,
     nixpkgs,
     home-manager,
+    hyprland,
     ...
     } @ inputs: let
       inherit (self) outputs;
+      pkgs = import nixpkgs {
+        config.allowUnfree = true;	
+      };
+      lib = nixpkgs.lib;
+
     in {
       # NixOS configuration entrypoint
       # Available through 'nixos-rebuild --flake .#your-hostname'
       nixosConfigurations = {
         nixos = nixpkgs.lib.nixosSystem {
           specialArgs = {inherit inputs outputs;};
-          # > Our main nixos configuration file <
-          modules = [./nixos/configuration.nix 
+          modules = [
+            ./test.nix
+            ./nixos/configuration.nix 
+            ./nixos/yubikey.nix
+            ./nixos/theme.nix
+            ./nixos/hyprland.nix
+            ./nixos/time.nix
+            ./nixos/fonts.nix
+            ./nixos/display-manager.nix
+            ./nixos/location.nix
+            ./nixos/fingerprint-scanner.nix
+            ./nixos/internationalisation.nix
           ];
         };
       };
@@ -35,10 +53,12 @@
       # Available through 'home-manager --flake .#your-username@your-hostname'
       homeConfigurations = {
         "gonah@nixos" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = {inherit inputs outputs;};
-          # > Our main home-manager configuration file <
-          modules = [./home-manager/home.nix];
+          pkgs = nixpkgs.x86_64-linux; 
+          extraSpecialArgs = {inherit inputs outputs hyprland;};
+          modules = [
+            ./home-manager/home.nix
+            
+          ];
         };
       };
     };

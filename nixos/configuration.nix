@@ -42,6 +42,8 @@ pkgs,
     };
   };
 
+
+
   nix = let
     flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
   in {
@@ -92,6 +94,20 @@ pkgs,
   services.desktopManager.plasma6.enable = true;
   services.displayManager.sddm.enable = true;
   services.displayManager.sddm.wayland.enable = true;
+  # Enable the gnome-keyring secrets vault. 
+  # Will be exposed through DBus to programs willing to store secrets.
+  services.gnome.gnome-keyring.enable = true;
+
+  # enable sway window manager
+  programs.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true;
+  };
+
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
 
   # OpenGL and Vulkan
   hardware = {
@@ -124,8 +140,10 @@ pkgs,
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    wireplumber.enable = true;
     # jack.enable = true; # Uncomment if you need JACK
   };
+
 
   # System-wide user configuration (only the essential parts)
   # We define the user here, but Home Manager will manage most of their configuration.
@@ -140,6 +158,7 @@ pkgs,
 
   # System-wide packages (keep these if you want them available to all users)
   environment.systemPackages = with pkgs; [
+    sdbus-cpp
     vulkan-tools
     glxinfo
     mesa
@@ -173,8 +192,33 @@ pkgs,
     qt5.qtwebchannel
     vulkan-headers
     cmake
+    foot
+    kitty
+    wofi
+    waybar
+    hyprpaper
+    discord
+    grim # screenshot functionality
+    slurp # screenshot functionality
+    mako # notification system developed by swaywm maintainer
+    ghostty
+    brave
+    rofi
+    firefox
+    kdePackages.dolphin
+    fnott
+    xdg-desktop-portal-hyprland
+    xdg-desktop-portal-gtk
+    polkit
+    pipewire
+    wireplumber
+    dunst
+    hyprpolkitagent
+    mangohud
   ];
 
+
+  services.udisks2.enable = true;
 
   services.flatpak.enable = true;
   programs.steam = {
