@@ -226,6 +226,8 @@ pkgs,
     hyprpolkitagent
     mangohud
     rofi
+    lm_sensors
+    bottom
   ];
 
 

@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  # Enable Theme
+  # # Enable Theme
   environment.variables.GTK_THEME = "catppuccin-macchiato-teal-standard";
   environment.variables.XCURSOR_THEME = "Catppuccin-Macchiato-Teal";
   environment.variables.XCURSOR_SIZE = "24";
@@ -48,7 +48,6 @@
     catppuccin-gtk
     catppuccin-kvantum
     catppuccin-cursors.macchiatoTeal
-
      pkgs.gnome-tweaks
      pkgs.gnome-shell
      pkgs.gnome-shell-extensions

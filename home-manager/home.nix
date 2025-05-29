@@ -78,6 +78,7 @@ pkgs,
     ];
   };
 
+
   home.packages = with pkgs; [
     # Packages from your original users.users.gonah.packages list
     vscode
@@ -263,6 +264,10 @@ pkgs,
          "custom/powermenu"
          "tray"
        ];
+       "temperature" = {
+        "format"= "{temperatureF}°F ";
+        "interval" = 10;
+      };
        "custom/launcher" = {
          "format" = " ";
          "on-click" = "pkill rofi || rofi2";

@@ -40,6 +40,7 @@
             ./nixos/fonts.nix
             ./nixos/location.nix
             ./nixos/fingerprint-scanner.nix
+            ./firefox.nix
           ];
         };
       };
