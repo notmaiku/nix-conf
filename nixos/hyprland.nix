@@ -19,9 +19,8 @@
     hyprlock
     hypridle
     hyprpaper
+    ghostty
 
-    inputs.wezterm.packages.${pkgs.system}.default
-    kitty
     cool-retro-term
 
     starship

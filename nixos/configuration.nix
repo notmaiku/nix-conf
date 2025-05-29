@@ -91,22 +91,23 @@ pkgs,
   # X11 and KDE Plasma
   services.xserver.enable = true;
   services.xserver.videoDrivers = [ "amdgpu" ];
-  services.desktopManager.plasma6.enable = true;
+  # services.desktopManager.plasma6.enable = true;
   services.displayManager.sddm.enable = true;
   services.displayManager.sddm.wayland.enable = true;
+  # services.displayManager.sddm.defaultSession = "";
   # Enable the gnome-keyring secrets vault. 
   # Will be exposed through DBus to programs willing to store secrets.
   services.gnome.gnome-keyring.enable = true;
 
-  # enable sway window manager
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
-  };
+  # programs.sway = {
+  #   enable = true;
+  #   wrapperFeatures.gtk = true;
+  # };
 
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
+    withUWSM = true; 
   };
 
   # OpenGL and Vulkan
@@ -157,7 +158,20 @@ pkgs,
 
 
   # System-wide packages (keep these if you want them available to all users)
+  #apps
   environment.systemPackages = with pkgs; [
+    kdePackages.discover # Optional: Install if you use Flatpak or fwupd firmware update sevice
+    kdePackages.kcalc # Calculator
+    kdePackages.kcharselect # Tool to select and copy special characters from all installed fonts
+    kdePackages.kcolorchooser # A small utility to select a color
+    kdePackages.kolourpaint # Easy-to-use paint program
+    kdePackages.ksystemlog # KDE SystemLog Application
+    kdePackages.sddm-kcm
+    kdePackages.isoimagewriter
+    kdePackages.dolphin
+    kdiff3
+    brave
+    cava
     sdbus-cpp
     vulkan-tools
     glxinfo
@@ -172,9 +186,7 @@ pkgs,
     gcc
     unzip
     wget
-    kdePackages.sddm-kcm
     kdiff3
-    kdePackages.isoimagewriter
     hardinfo2
     haruna
     wayland-utils
@@ -187,9 +199,8 @@ pkgs,
     ninja
     mpv
     python3Packages.websockets
-    qt5.qtdeclarative
-    qt5.qtwebsockets
-    qt5.qtwebchannel
+    pkgs.qt5.full
+    pkgs.qt6.full
     vulkan-headers
     cmake
     foot
@@ -198,29 +209,35 @@ pkgs,
     waybar
     hyprpaper
     discord
-    grim # screenshot functionality
-    slurp # screenshot functionality
-    mako # notification system developed by swaywm maintainer
+    grim 
+    chromium
+    slurp
+    mako 
     ghostty
     brave
-    rofi
     firefox
-    kdePackages.dolphin
     fnott
+    lf
     xdg-desktop-portal-hyprland
     xdg-desktop-portal-gtk
-    polkit
     pipewire
     wireplumber
     dunst
     hyprpolkitagent
     mangohud
+    rofi
   ];
 
 
   services.udisks2.enable = true;
-
+  programs.thunar.enable = true;
+  programs.thunar.plugins = with pkgs.xfce; [
+    thunar-archive-plugin
+    thunar-volman
+  ];
   services.flatpak.enable = true;
+
+
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
@@ -235,8 +252,14 @@ pkgs,
 
   # Kernel modules
   boot.kernelModules = [ "amdgpu" ];
+  fileSystems."/mnt/gameslinux" = {
+    device = "/dev/disk/by-label/gameslinux";
+
+    fsType = "btrfs"; 
+
+
+  };
 
   # State version for NixOS
-  # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "25.05";
 }
