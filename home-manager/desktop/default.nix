@@ -1,5 +1,8 @@
-{ config, pkgs, ... }: {
-  imports = [
-    ./hypr
-  ];
+{ config, pkgs, ... }:
+
+{ imports = [
+        ./hypr
+        ./waybar
+];
 }
+
